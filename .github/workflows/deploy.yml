@@ -18,10 +18,25 @@ jobs:
       # 1. Baixa o código do repositório
       - uses: actions/checkout@v5
 
-      # 2. Faz login no registro de imagens do GitHub (a senha é automática)
+      # 2. Instala o Node.js
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+
+      # 3. Roda o teste da aplicação
+      - run: npm test
+
+      # 4. Cria a imagem
+      - run: docker build -t ghcr.io/pedroant06/javascript-helloword .
+
+      # 5. Inicia o container e roda o teste de carga nele
+      - run: |
+          docker run -d -p 3000:3000 ghcr.io/pedroant06/javascript-helloword
+          sleep 3
+          npm run test:load
+
+      # 6. Faz login no registro de imagens do GitHub (a senha é automática)
       - run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      # 3. Cria a imagem e envia para o registro
-      - run: |
-          docker build -t ghcr.io/pedroant06/javascript-helloword .
-          docker push ghcr.io/pedroant06/javascript-helloword
+      # 7. Envia a imagem para o registro
+      - run: docker push ghcr.io/pedroant06/javascript-helloword

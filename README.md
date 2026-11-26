@@ -24,14 +24,17 @@ docker run --rm -p 3000:3000 hello-world
 
 A cada push na `main`, o workflow [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml):
 
-1. baixa o código;
-2. faz login no GitHub Container Registry;
-3. cria a imagem Docker e a publica.
+1. roda o teste da aplicação;
+2. cria a imagem Docker;
+3. roda um teste de carga no container (1000 requisições, 50 simultâneas);
+4. publica a imagem no GitHub Container Registry.
+
+```sh
+npm run test:load
+```
 
 Para baixar e rodar a imagem publicada:
 
 ```sh
 docker run --rm -p 3000:3000 ghcr.io/pedroant06/javascript-helloword:latest
 ```
-
-Se o pacote estiver privado, faça antes `docker login ghcr.io`.

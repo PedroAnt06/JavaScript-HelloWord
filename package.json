@@ -1,0 +1,14 @@
+{
+  "name": "javascript-helloworld",
+  "version": "1.0.0",
+  "description": "Hello World em Node.js com Docker e GitHub Actions",
+  "main": "src/server.js",
+  "private": true,
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=24"
+  }
+}

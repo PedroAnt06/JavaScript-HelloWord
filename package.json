@@ -6,7 +6,8 @@
   "private": true,
   "scripts": {
     "start": "node src/server.js",
-    "test": "node --test"
+    "test": "node --test",
+    "test:load": "node load/carga.js"
   },
   "engines": {
     "node": ">=24"

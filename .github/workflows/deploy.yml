@@ -1,0 +1,27 @@
+name: Deploy
+
+# Quando rodar: a cada push na branch main
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest # máquina do GitHub que executa os passos
+
+    # Permite publicar a imagem no registro do GitHub
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      # 1. Baixa o código do repositório
+      - uses: actions/checkout@v5
+
+      # 2. Faz login no registro de imagens do GitHub (a senha é automática)
+      - run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      # 3. Cria a imagem e envia para o registro
+      - run: |
+          docker build -t ghcr.io/pedroant06/javascript-helloword .
+          docker push ghcr.io/pedroant06/javascript-helloword
